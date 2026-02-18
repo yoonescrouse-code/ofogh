@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  openwrt-builder:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: openwrt-builder
+    volumes:
+      # Keep dl and bin directories outside Docker
+      - ./dl:/openwrt/dl
+      - ./bin:/openwrt/bin
+      # Keep bash history for non-root user
+      - ./docker-history:/home/builder/.history
+      # Source code (if you want to mount it)
+      - ./openwrt-source:/openwrt/source
+      # Memory bank
+      - ./memory-bank:/openwrt/memory-bank
+      # Memory bank helper script (optional)
+      - ./update-memory-bank.sh:/openwrt/update-memory-bank.sh:ro
+    environment:
+      - DEBIAN_FRONTEND=noninteractive
+    # Run container as non-root user (adjust UID:GID if your user is different)
+    user: "1000:1000"
+    stdin_open: true
+    tty: true
+    # Keep container running
+    command: tail -f /dev/null
+

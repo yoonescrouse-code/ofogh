@@ -1,0 +1,9 @@
+dl/
+bin/
+docker-history/
+memory-bank/
+*.md
+docs/
+__pycache__/
+*.pyc
+openwrt-source/
